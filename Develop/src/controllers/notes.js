@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { v4: uuidv4 } = require("uuid");
 const getFromDb = require("../utils/getFromDb");
 const writeToDb = require("../utils/writeToDb");
 
@@ -18,15 +19,11 @@ const getNoteById = (req, res) => {
 };
 
 const createNote = (req, res) => {
-  const id = 2;
+  const id = uuidv4();
 
-  const { body } = req;
-  const { text, title } = body;
-  console.log(id, "id");
-  console.log(body, "body");
+  const { text, title } = req.body;
 
-  let notes = getFromDb();
-  console.log(notes, "notes");
+  const notes = getFromDb();
 
   const newNote = {
     id,
@@ -34,19 +31,9 @@ const createNote = (req, res) => {
     title,
   };
   notes.push(newNote);
-  console.log(newNote, "newNote");
 
-  const callback = (err) => {
-    if (err) {
-      console.log("fail", err);
-    } else {
-      console.log("pass");
-    }
-  };
-
-  notes = JSON.stringify(notes);
-
-  fs.writeFile("/db/db.json", notes, callback);
+  writeToDb(JSON.stringify(notes));
+  res.json({ success: true });
 };
 
 const deleteNote = (req, res) => {
