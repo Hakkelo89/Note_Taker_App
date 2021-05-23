@@ -37,7 +37,17 @@ const createNote = (req, res) => {
 };
 
 const deleteNote = (req, res) => {
-  notes, newNote, writeToDb(JSON.stringify(newNotes));
+  const notes = getFromDb();
+
+  const { id } = req.params;
+
+  const callback = (note) => {
+    return note.id !== id;
+  };
+
+  const filteredData = notes.filter(callback);
+
+  writeToDb(JSON.stringify(filteredData));
 
   res.json({ success: true });
 };
