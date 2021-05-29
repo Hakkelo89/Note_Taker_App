@@ -17,5 +17,5 @@ app.use("/api", apiRoutes);
 app.use("/", htmlRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at heroku`);
+  console.log(`app is listening at http://localhost:${PORT}`);
 });
